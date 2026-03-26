@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Carbon Glassmorphism Theme ── */
+@layer base {
+  body {
+    background: linear-gradient(135deg, #0a0a0a 0%, #111111 50%, #0d0d0d 100%);
+    min-height: 100vh;
+    color: #f1f5f9;
+  }
+}
+
+@layer components {
+  /* Surfaces */
+  .glass-panel {
+    @apply bg-white/[0.04] border border-white/[0.07] backdrop-blur-xl;
+  }
+  .glass-card {
+    @apply bg-white/[0.04] border border-white/[0.08] backdrop-blur-md rounded-xl;
+  }
+
+  /* Inputs */
+  .glass-input {
+    @apply w-full bg-white/[0.06] border border-white/[0.10] rounded-lg px-3 py-2
+           text-sm text-slate-100 placeholder:text-white/30
+           focus:outline-none focus:border-white/25 focus:ring-1 focus:ring-white/[0.15]
+           backdrop-blur-sm;
+  }
+  .glass-textarea {
+    @apply glass-input resize-none;
+  }
+
+  /* Buttons */
+  .glass-btn {
+    @apply bg-white/[0.12] border border-white/[0.18] rounded-lg text-white
+           font-medium text-sm hover:bg-white/[0.18] transition-colors backdrop-blur-sm;
+  }
+  .glass-btn-ghost {
+    @apply text-white/50 hover:bg-white/[0.06] rounded-lg transition-colors text-sm px-3 py-1.5;
+  }
+
+  /* Tags */
+  .glass-tag {
+    @apply bg-white/[0.10] border border-white/[0.12] text-white/70 text-xs px-2 py-0.5 rounded-full;
+  }
+
+  /* Sidebar navigation */
+  .glass-nav-item {
+    @apply text-left px-3 py-1.5 rounded-lg text-sm text-white/55
+           hover:bg-white/[0.07] transition-colors w-full border border-transparent;
+  }
+  .glass-nav-item-active {
+    @apply glass-nav-item bg-white/[0.10] border-white/[0.10] text-white;
+  }
+  .glass-section-label {
+    @apply text-xs text-white/30 uppercase tracking-wider px-1 my-1;
+  }
+}
