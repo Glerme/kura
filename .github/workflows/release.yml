@@ -37,6 +37,12 @@ jobs:
       - name: Build & zip Firefox extension
         run: pnpm --filter extension zip:firefox
 
+      - name: Package builds for sideloading
+        run: |
+          cd apps/extension/.output
+          zip -r kura-chrome-sideload.zip chrome-mv3/
+          zip -r kura-firefox-sideload.zip firefox-mv2/
+
       - name: Get version from tag
         id: version
         run: echo "VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
@@ -45,9 +51,22 @@ jobs:
         id: changelog
         run: |
           CHANGELOG=$(bash scripts/generate-changelog.sh "$GITHUB_REF_NAME")
-          echo "CHANGELOG<<EOF" >> "$GITHUB_OUTPUT"
-          echo "$CHANGELOG" >> "$GITHUB_OUTPUT"
-          echo "EOF" >> "$GITHUB_OUTPUT"
+          {
+            echo "CHANGELOG<<EOF"
+            echo "$CHANGELOG"
+            echo ""
+            echo "---"
+            echo ""
+            echo "## 📦 Downloads"
+            echo ""
+            echo "| Arquivo | Uso |"
+            echo "|---|---|"
+            echo "| \`kura-extension-${GITHUB_REF_NAME#v}-chrome.zip\` | Upload na Chrome Web Store |"
+            echo "| \`kura-extension-${GITHUB_REF_NAME#v}-firefox.zip\` | Upload no Firefox Add-ons |"
+            echo "| \`kura-chrome-sideload.zip\` | Sideload no Chrome (\`chrome://extensions\` → Carregar sem compactação) |"
+            echo "| \`kura-firefox-sideload.zip\` | Sideload no Firefox (\`about:debugging\` → Carregar extensão temporária) |"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -55,4 +74,7 @@ jobs:
           name: Kura v${{ steps.version.outputs.VERSION }}
           body: ${{ steps.changelog.outputs.CHANGELOG }}
           files: |
-            apps/extension/.output/*.zip
+            apps/extension/.output/kura-extension-*-chrome.zip
+            apps/extension/.output/kura-extension-*-firefox.zip
+            apps/extension/.output/kura-chrome-sideload.zip
+            apps/extension/.output/kura-firefox-sideload.zip
