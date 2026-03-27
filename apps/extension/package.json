@@ -14,7 +14,10 @@
     "test": "vitest",
     "lint": "eslint .",
     "compile": "tsc --noEmit",
-    "postinstall": "wxt prepare"
+    "postinstall": "wxt prepare",
+    "release:patch": "npm version patch && git push && git push --tags",
+    "release:minor": "npm version minor && git push && git push --tags",
+    "release:major": "npm version major && git push && git push --tags"
   },
   "dependencies": {
     "@wxt-dev/i18n": "^0.2.5",
