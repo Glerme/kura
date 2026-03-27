@@ -1,8 +1,4 @@
 {
-  "ext_name": {
-    "message": "Kura"
-  },
-  "ext_description": {
-    "message": "Save and organize links with ease"
-  }
+  "ext_name": "Kura",
+  "ext_description": "Save links with comments and tags"
 }
