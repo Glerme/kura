@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+/* ── Kura design tokens (mirrors popup App.css) ── */
+:root {
+  --bg: #080808;
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface-hover: rgba(255, 255, 255, 0.09);
+  --border: rgba(255, 255, 255, 0.13);
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --text: rgba(255, 255, 255, 0.85);
+  --muted: rgba(255, 255, 255, 0.30);
+  --dimmed: rgba(255, 255, 255, 0.18);
+  --accent: rgba(255, 255, 255, 0.50);
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── Glassmorphism panel ── */
+.glass {
+  background: var(--surface);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid var(--border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  position: relative;
+}
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* ── Ambient blobs ── */
+.blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+.blob-1 { width: 500px; height: 500px; background: #fff;    top: -150px; left: -150px; opacity: 0.04; }
+.blob-2 { width: 400px; height: 400px; background: #aaa;    bottom: -100px; right: -100px; opacity: 0.05; }
+.blob-3 { width: 300px; height: 300px; background: #ddd;    top: 40%;  left: 60%; opacity: 0.03; }
+
+/* ── Buttons ── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.10);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10);
+  transition: background 0.15s, border-color 0.15s;
+  text-decoration: none;
+}
+.btn-primary:hover { background: rgba(255, 255, 255, 0.16); border-color: rgba(255, 255, 255, 0.22); }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.15s, border-color 0.15s;
+  text-decoration: none;
+}
+.btn-ghost:hover { color: var(--text); border-color: var(--border); }
+
+/* ── Section spacing ── */
+.section { position: relative; z-index: 1; padding: 96px 24px; }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+
+/* ── Tag chip ── */
+.chip {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  border: 1px solid var(--border-subtle);
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.04);
+  font-family: inherit;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
