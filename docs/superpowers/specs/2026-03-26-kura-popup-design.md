@@ -7,7 +7,7 @@
 
 ## 1. Visão Geral
 
-Extensão Chrome (MV3) para salvar links com comentários, tags e compartilhamento social. Offline-first via IndexedDB, sem backend no MVP. A lib layer (`db.ts`, `fetch-title.ts`, `tags.ts`, `types.ts`, `i18n.ts`) já está completa — este spec cobre a camada de UI e integração.
+Extensão Chrome (MV3) + Firefox (MV2) para salvar links com comentários, tags e compartilhamento social. Offline-first via IndexedDB, sem backend no MVP. A lib layer (`db.ts`, `fetch-title.ts`, `tags.ts`, `types.ts`, `i18n.ts`) já está completa — este spec cobre a camada de UI e integração.
 
 ---
 
@@ -188,7 +188,6 @@ apps/extension/
 - Ordenação manual da lista
 - Pastas (substituídas por tags)
 - Side Panel
-- Firefox
 
 ---
 
