@@ -5,15 +5,27 @@ export default defineBackground(() => {
   browser.contextMenus.create({
     id: 'save-to-kura',
     title: 'Salvar no Kura',
-    contexts: ['page', 'link'],
+    contexts: ['page', 'link', 'selection'],
   })
 
   browser.contextMenus.onClicked.addListener(async (info, tab) => {
+    const tabId = tab?.id
+    if (!tabId) return
+
+    // Selection: save the selected text as a note (no URL)
+    if (info.selectionText) {
+      const text = info.selectionText.trim()
+      const title = text.length > 80 ? text.slice(0, 80) + '…' : text
+      const comment = text.length > 80 ? text : undefined
+      const link = await addLink({ url: `kura://note/${Date.now()}`, title, comment, tags: [], favicon: '' })
+      browser.tabs.sendMessage(tabId, { type: 'LINK_SAVED', link })
+      return
+    }
+
     // Strip fragment from URL — fragments are client-side only
     const url = (info.linkUrl ?? info.pageUrl ?? tab?.url ?? '').split('#')[0]
     const title = tab?.title ?? ''
-    const tabId = tab?.id
-    if (!url || !tabId) return
+    if (!url) return
 
     const existing = await getLinkByUrl(url)
 
