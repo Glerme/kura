@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { getAllLinks, getAllTags, deleteLink, updateLink } from '../../lib/db'
 import { domainFromUrl } from '../../lib/fetch-title'
-import { parseTags } from '../../lib/tags'
 import type { KuraLink, FilterState } from '../../lib/types'
 import './App.css'
 

@@ -1,0 +1,2 @@
+pnpm --filter kura-extension lint
+pnpm --filter kura-extension compile

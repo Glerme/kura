@@ -78,7 +78,7 @@ export function LinksTab() {
       <div className="popup-footer">
         <button
           className="footer-btn"
-          onClick={() => browser.tabs.create({ url: browser.runtime.getURL('options.html') })}
+          onClick={() => browser.tabs.create({ url: browser.runtime.getURL('/options.html') })}
         >Ver todos os links →</button>
       </div>
     </>

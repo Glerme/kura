@@ -8,7 +8,7 @@ export function mockBrowser() {
       query: vi.fn().mockResolvedValue([{ url: 'https://example.com', title: 'Example' }]),
     },
     runtime: {
-      getURL: vi.fn((path: string) => `chrome-extension://fake-id/${path}`),
+      getURL: vi.fn((path: string) => `chrome-extension://fake-id/${path.replace(/^\//, '')}`),
       sendMessage: vi.fn(),
       onMessage: { addListener: vi.fn() },
     },

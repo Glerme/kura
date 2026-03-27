@@ -1,5 +1,5 @@
 import 'fake-indexeddb/auto'
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import {
   addLink, getAllLinks, getRecent, updateLink, deleteLink,
   searchLinks, getAllTags, getTagCounts, getLinkByUrl,
@@ -18,11 +18,16 @@ describe('addLink', () => {
 
 describe('getAllLinks', () => {
   it('returns links sorted newest first', async () => {
-    const a = await addLink({ url: 'https://first.com', title: 'First', tags: [] })
-    const b = await addLink({ url: 'https://second.com', title: 'Second', tags: [] })
+    const spy = vi.spyOn(Date, 'now')
+    spy.mockReturnValueOnce(1000)
+    const a = await addLink({ url: 'https://sort-first.com', title: 'First', tags: [] })
+    spy.mockReturnValueOnce(2000)
+    const b = await addLink({ url: 'https://sort-second.com', title: 'Second', tags: [] })
+    spy.mockRestore()
     const all = await getAllLinks()
-    expect(all[0].id).toBe(b.id)
-    expect(all[1].id).toBe(a.id)
+    const idxA = all.findIndex(l => l.id === a.id)
+    const idxB = all.findIndex(l => l.id === b.id)
+    expect(idxB).toBeLessThan(idxA)
   })
 })
 

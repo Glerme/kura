@@ -14,7 +14,7 @@ const existingLink = {
 }
 
 vi.mock('../../lib/db', () => ({
-  getLinkByUrl: vi.fn().mockResolvedValue(null),
+  getLinkByUrl: vi.fn().mockResolvedValue(undefined),
   addLink: vi.fn().mockResolvedValue({ id: 'new-id' }),
   updateLink: vi.fn().mockResolvedValue(undefined),
 }))
@@ -23,7 +23,7 @@ describe('SaveTab', () => {
   beforeEach(() => {
     mockBrowser()
     vi.clearAllMocks()
-    vi.mocked(getLinkByUrl).mockResolvedValue(null)
+    vi.mocked(getLinkByUrl).mockResolvedValue(undefined)
   })
 
   it('pre-fills URL and title from current tab', async () => {
