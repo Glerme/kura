@@ -6,13 +6,13 @@
 
 ## 1. Modelos de Monetização para Extensões
 
-| Modelo | Pros | Contras | Exemplos |
-|--------|------|---------|---------|
-| **Freemium** | 5-7x mais installs que paid-only; conversão 2-5% | Precisa de features premium claras | Raindrop.io, Grammarly, LastPass |
-| **Assinatura** | Receita recorrente e previsível | Usuários resistem a subscription fatigue | Pocket Premium (encerrou Jul/2025), start.me |
-| **Compra única** | Simples, sem friction de cobrança mensal | Sem receita recorrente; difícil escalar | Pinboard ($22 one-time) |
-| **Doações** | Zero friction; boa vontade da comunidade | Receita imprevisível e baixa | Wikipedia model, extensões open-source |
-| **Afiliados** | Não cobra do usuário | Pode parecer spam; baixa receita | Honey (adquirido pelo PayPal por $4B) |
+| Modelo           | Pros                                             | Contras                                  | Exemplos                                     |
+| ---------------- | ------------------------------------------------ | ---------------------------------------- | -------------------------------------------- |
+| **Freemium**     | 5-7x mais installs que paid-only; conversão 2-5% | Precisa de features premium claras       | Raindrop.io, Grammarly, LastPass             |
+| **Assinatura**   | Receita recorrente e previsível                  | Usuários resistem a subscription fatigue | Pocket Premium (encerrou Jul/2025), start.me |
+| **Compra única** | Simples, sem friction de cobrança mensal         | Sem receita recorrente; difícil escalar  | Pinboard ($22 one-time)                      |
+| **Doações**      | Zero friction; boa vontade da comunidade         | Receita imprevisível e baixa             | Wikipedia model, extensões open-source       |
+| **Afiliados**    | Não cobra do usuário                             | Pode parecer spam; baixa receita         | Honey (adquirido pelo PayPal por $4B)        |
 
 **Conclusão:** Freemium com assinatura é o modelo dominante e mais sustentável para extensões de produtividade.
 
@@ -20,16 +20,17 @@
 
 ## 2. Análise de Concorrentes
 
-| App | Free | Pago | Preço | Gate Principal |
-|-----|------|------|-------|----------------|
-| **Raindrop.io** | Save, tags, coleções | Full-text search, nested collections, backup permanente | $3/mês ou $28/ano | Cloud sync + full-text search |
-| **Pocket** | Save, tags, leitura offline | Encerrou em Jul/2025 | — | **Oportunidade para o Kura** |
-| **Instapaper** | Save, leitura | Full-text search, highlights ilimitados, speed reading | $5.99/mês ou $59.99/ano | Search + highlights |
-| **Toby** | Tabs organizadas (até 200) | Ilimitado, sync, teams | $4.50/mês | Limite de quantidade + sync |
-| **start.me** | Dashboard pessoal | Remover ads, múltiplas páginas | $2/mês ou $20/ano | Sem ads + features extras |
-| **Papaly** | Save, boards públicos | Sem plano pago aparente | — | Modelo puramente free (sem tração) |
+| App             | Free                        | Pago                                                    | Preço                   | Gate Principal                     |
+| --------------- | --------------------------- | ------------------------------------------------------- | ----------------------- | ---------------------------------- |
+| **Raindrop.io** | Save, tags, coleções        | Full-text search, nested collections, backup permanente | $3/mês ou $28/ano       | Cloud sync + full-text search      |
+| **Pocket**      | Save, tags, leitura offline | Encerrou em Jul/2025                                    | —                       | **Oportunidade para o Kura**       |
+| **Instapaper**  | Save, leitura               | Full-text search, highlights ilimitados, speed reading  | $5.99/mês ou $59.99/ano | Search + highlights                |
+| **Toby**        | Tabs organizadas (até 200)  | Ilimitado, sync, teams                                  | $4.50/mês               | Limite de quantidade + sync        |
+| **start.me**    | Dashboard pessoal           | Remover ads, múltiplas páginas                          | $2/mês ou $20/ano       | Sem ads + features extras          |
+| **Papaly**      | Save, boards públicos       | Sem plano pago aparente                                 | —                       | Modelo puramente free (sem tração) |
 
 **Padrões observados:**
+
 - Cloud sync é o gate premium **#1** — todos os players cobram por isso
 - Full-text search é o gate **#2**
 - Preço médio do mercado: **$3–6/mês**
@@ -40,12 +41,14 @@
 ## 3. Políticas das Stores
 
 ### Chrome Web Store
+
 - Chrome Payment API **descontinuada** — necessário usar processador externo
 - **[ExtensionPay](https://extensionpay.com/)** recomendado: open-source, Stripe-based, sem comissão da store
 - Ads são permitidos mas AdSense está banido dentro de extensões
 - Extensões não podem mais ser listadas como "paid" diretamente na store
 
 ### Firefox Add-ons (AMO)
+
 - Sem restrições significativas de monetização
 - Aceita qualquer modelo com disclosure adequado ao usuário
 - Mercado menos competitivo que Chrome — boa oportunidade de nicho
@@ -55,16 +58,18 @@
 ## 4. Free vs Kura Pro — Divisão de Features
 
 ### Free (para sempre)
+
 - Salvar links via context menu e popup
 - Tags e comentários
 - Lista de leitura com status lido/não-lido
 - Busca básica (título, tags, comentário)
-- Import/export JSON e CSV
 - Compartilhamento via WhatsApp, Twitter e cópia de link
 - Armazenamento local ilimitado (IndexedDB)
 - i18n (EN + PT-BR)
 
 ### Kura Pro (premium)
+
+- **Import/export JSON e CSV** - importação e exportação de links
 - **Cloud sync** entre dispositivos — _killer feature_, requer backend (Fase 3)
 - **Full-text search** no conteúdo das páginas salvas (não só título/tags)
 - **Backup automático** na nuvem com histórico de versões
@@ -74,6 +79,7 @@
 - Temas visuais adicionais
 
 ### Kura Teams (Fase 3+)
+
 - Workspaces compartilhados
 - Coleções de equipe
 - Permissões por membro (viewer / editor / admin)
@@ -84,6 +90,7 @@
 ## 5. Estratégia por Fase
 
 ### Fase 1 — Growth (Meses 1–6)
+
 **Objetivo:** aquisição de usuários, nenhuma cobrança.
 
 - Extensão 100% gratuita
@@ -93,6 +100,7 @@
 - Coletar feedback: quais features os usuários pagariam?
 
 ### Fase 2 — Lançamento Pro (Meses 6–12)
+
 **Objetivo:** receita recorrente, cloud sync como produto central.
 
 - Lançar **Kura Pro** junto com o backend (Fase 3 do roadmap)
@@ -103,6 +111,7 @@
 - Regra fundamental: **nunca retroagir features que já eram free**
 
 ### Fase 3 — Escala (Meses 12–24)
+
 **Objetivo:** expansão para times e parcerias.
 
 - Lançar **Kura Teams** a $5–8/usuário/mês
@@ -140,10 +149,10 @@ Nenhuma bloqueia o desenvolvimento atual, mas devem ser decididas agora:
 
 ## 7. Stack de Monetização Recomendada
 
-| Componente | Ferramenta |
-|------------|------------|
+| Componente             | Ferramenta                                              |
+| ---------------------- | ------------------------------------------------------- |
 | Pagamentos na extensão | [ExtensionPay](https://extensionpay.com/) (open-source) |
-| Processador | Stripe |
-| Doações | Buy Me a Coffee ou GitHub Sponsors |
-| E-mails/Waitlist | Resend + banco de e-mails próprio |
-| Analytics | PostHog (self-hosted, privacy-friendly) |
+| Processador            | Stripe                                                  |
+| Doações                | Buy Me a Coffee ou GitHub Sponsors                      |
+| E-mails/Waitlist       | Resend + banco de e-mails próprio                       |
+| Analytics              | PostHog (self-hosted, privacy-friendly)                 |
