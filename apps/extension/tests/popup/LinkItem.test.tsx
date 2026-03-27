@@ -108,8 +108,10 @@ describe('LinkItem', () => {
   it('copies URL to clipboard when share is clicked (no navigator.share)', async () => {
     render(<LinkItem link={link} isExpanded={true} onToggle={onToggle} onRefresh={onRefresh} />)
     fireEvent.click(screen.getByText('⎘ Compartilhar'))
-    await waitFor(() => expect(navigator.clipboard.writeText).toHaveBeenCalledWith('https://github.com/test'))
-    expect(screen.getByText('✓ Copiado')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(navigator.clipboard.writeText).toHaveBeenCalledWith('https://github.com/test')
+      expect(screen.getByText('✓ Copiado')).toBeInTheDocument()
+    })
   })
 
   it('uses navigator.share when available for regular links', async () => {
