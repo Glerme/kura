@@ -32,10 +32,10 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build & zip Chrome extension
-        run: pnpm --filter extension zip
+        run: pnpm --filter kura-extension zip
 
       - name: Build & zip Firefox extension
-        run: pnpm --filter extension zip:firefox
+        run: pnpm --filter kura-extension zip:firefox
 
       - name: Package builds for sideloading
         run: |
