@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { addLink, getLinkByUrl, updateLink } from '../../lib/db'
 import { parseTags } from '../../lib/tags'
-import { domainFromUrl } from '../../lib/fetch-title'
+import { fetchTitle, domainFromUrl } from '../../lib/fetch-title'
 import type { KuraLink } from '../../lib/types'
 
 export function SaveTab() {
@@ -14,9 +14,14 @@ export function SaveTab() {
   const [saved, setSaved] = useState(false)
 
   useEffect(() => {
-    browser.tabs.query({ active: true, currentWindow: true }).then(([tab]) => {
+    browser.tabs.query({ active: true, currentWindow: true }).then(async ([tab]) => {
       if (tab?.url) setUrl(tab.url)
-      if (tab?.title) setTitle(tab.title)
+      if (tab?.title) {
+        setTitle(tab.title)
+      } else if (tab?.url) {
+        const fetched = await fetchTitle(tab.url).catch(() => '')
+        if (fetched) setTitle(fetched)
+      }
     })
   }, [])
 

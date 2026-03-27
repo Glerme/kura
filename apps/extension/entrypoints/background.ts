@@ -27,4 +27,11 @@ export default defineBackground(() => {
     const link = await addLink({ url, title, tags: [], favicon })
     browser.tabs.sendMessage(tabId, { type: 'LINK_SAVED', link })
   })
+
+  browser.runtime.onMessage.addListener((msg) => {
+    if (msg.type === 'OPEN_POPUP') {
+      // browser.action.openPopup is available in Chrome MV3; may not work in all contexts
+      browser.action.openPopup?.()
+    }
+  })
 })

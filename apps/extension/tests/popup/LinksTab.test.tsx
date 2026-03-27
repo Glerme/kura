@@ -3,13 +3,6 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { LinksTab } from '../../entrypoints/popup/LinksTab'
 import { mockBrowser } from './mocks'
-import type { KuraLink } from '../../lib/types'
-
-const links: KuraLink[] = [
-  { id: '1', url: 'https://github.com/a', title: 'GitHub Article', tags: ['dev'], savedAt: 3000, readAt: undefined },
-  { id: '2', url: 'https://medium.com/b', title: 'Medium Post', tags: ['leitura'], savedAt: 2000, readAt: 1500 },
-  { id: '3', url: 'https://rust-lang.org', title: 'Rust Docs', tags: ['dev', 'rust'], savedAt: 1000, readAt: undefined },
-]
 
 vi.mock('../../lib/db', () => ({
   getAllLinks: vi.fn().mockResolvedValue([

@@ -57,12 +57,15 @@ export default defineContentScript({
         close()
       })
 
-      if (mode === 'saved') {
-        timer = setTimeout(close, 6000)
-      }
+      timer = setTimeout(close, mode === 'saved' ? 6000 : 10000)
     }
   },
 })
+
+function esc(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+         .replace(/"/g, '&quot;').replace(/'/g, '&#39;')
+}
 
 function buildToastHTML(mode: 'saved' | 'existing', link: KuraLink): string {
   const truncUrl = link.url.length > 42 ? link.url.slice(0, 42) + '…' : link.url
@@ -116,7 +119,7 @@ function buildToastHTML(mode: 'saved' | 'existing', link: KuraLink): string {
       <div class="icon">◆</div>
       <div class="txt">
         <div class="ttl">${isSaved ? 'Link salvo!' : 'Já salvo!'}</div>
-        <div class="url">${truncUrl}</div>
+        <div class="url">${esc(truncUrl)}</div>
       </div>
       <button class="x" id="kura-close">✕</button>
     </div>
@@ -134,8 +137,8 @@ function buildToastHTML(mode: 'saved' | 'existing', link: KuraLink): string {
     </div>
     <div id="kura-expanded" style="display:none">
       <div class="fields">
-        <input class="inp" id="kura-tags" placeholder="Tags (ex: dev, leitura)" value="${link.tags.join(', ')}">
-        <textarea class="ta" id="kura-comment" placeholder="Comentário...">${link.comment ?? ''}</textarea>
+        <input class="inp" id="kura-tags" placeholder="Tags (ex: dev, leitura)" value="${esc(link.tags.join(', '))}">
+        <textarea class="ta" id="kura-comment" placeholder="Comentário...">${esc(link.comment ?? '')}</textarea>
       </div>
       <div class="acts">
         <button class="btn ghost" id="kura-skip">Pular</button>
