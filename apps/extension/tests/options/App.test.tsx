@@ -62,7 +62,7 @@ describe('Options App — Tag Counts', () => {
 describe('Options App — Import/Export', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    vi.useFakeTimers()
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval'] })
   })
 
   afterEach(() => {
