@@ -1,6 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react'
-import { vi, describe, it, expect, beforeEach } from 'vitest'
+import { fireEvent } from '@testing-library/react'
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
 import App from '../../entrypoints/options/App'
+import { exportJSON, importJSON as _importJSON, importBookmarksHTML as _importBookmarksHTML } from '../../lib/import-export'
 
 vi.mock('../../lib/db', () => ({
   getAllLinks: vi.fn().mockResolvedValue([
@@ -10,6 +12,12 @@ vi.mock('../../lib/db', () => ({
   getTagCounts: vi.fn().mockResolvedValue({ dev: 2, react: 1 }),
   deleteLink: vi.fn(),
   updateLink: vi.fn(),
+}))
+
+vi.mock('../../lib/import-export', () => ({
+  exportJSON: vi.fn(),
+  importJSON: vi.fn().mockResolvedValue({ imported: 3, skipped: 1 }),
+  importBookmarksHTML: vi.fn().mockResolvedValue({ imported: 5, skipped: 2 }),
 }))
 
 vi.mock('../../lib/fetch-title', () => ({
@@ -47,6 +55,70 @@ describe('Options App — Tag Counts', () => {
     await waitFor(() => {
       const counts = document.querySelectorAll('.tag-count')
       expect(counts.length).toBe(2)
+    })
+  })
+})
+
+describe('Options App — Import/Export', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('renders Exportar and Importar buttons in sidebar', async () => {
+    render(<App />)
+    await waitFor(() => {
+      expect(screen.getByText(/Exportar/)).toBeInTheDocument()
+      expect(screen.getByText(/Importar/)).toBeInTheDocument()
+    })
+  })
+
+  it('calls exportJSON with current links on Exportar click', async () => {
+    render(<App />)
+    await waitFor(() => screen.getByText(/Exportar/))
+    fireEvent.click(screen.getByText(/Exportar/))
+    expect(exportJSON).toHaveBeenCalledWith(expect.any(Array))
+  })
+
+  it('has hidden file input with correct accept attribute', async () => {
+    render(<App />)
+    await waitFor(() => screen.getByText(/Importar/))
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement
+    expect(fileInput).toBeTruthy()
+    expect(fileInput.accept).toBe('.json,.html')
+  })
+
+  it('shows import banner after JSON import', async () => {
+    render(<App />)
+    await waitFor(() => screen.getByText(/Importar/))
+
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement
+    const file = new File(['[]'], 'test.json', { type: 'application/json' })
+    Object.defineProperty(fileInput, 'files', { value: [file], configurable: true })
+    fireEvent.change(fileInput)
+
+    await waitFor(() => {
+      expect(screen.getByText(/3 importados, 1 ignorados/)).toBeInTheDocument()
+    })
+  })
+
+  it('hides import banner after 4 seconds', async () => {
+    render(<App />)
+    await waitFor(() => screen.getByText(/Importar/))
+
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement
+    const file = new File(['[]'], 'test.json', { type: 'application/json' })
+    Object.defineProperty(fileInput, 'files', { value: [file], configurable: true })
+    fireEvent.change(fileInput)
+
+    await waitFor(() => screen.getByText(/3 importados/))
+    vi.advanceTimersByTime(4000)
+    await waitFor(() => {
+      expect(screen.queryByText(/3 importados/)).not.toBeInTheDocument()
     })
   })
 })
