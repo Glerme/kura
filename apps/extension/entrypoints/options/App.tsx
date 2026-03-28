@@ -146,7 +146,7 @@ export default function App() {
                       <div className="row-title">{link.title}</div>
                       <div className="row-meta">
                         <span className="row-domain">{domain}</span>
-                        {link.tags.map(t => <span key={t} className="tag">#{t}</span>)}
+                        {link.tags.map(t => <span key={t} className="tag">{t}</span>)}
                       </div>
                       {link.comment && isExpanded && (
                         <div className="row-comment">"{link.comment}"</div>

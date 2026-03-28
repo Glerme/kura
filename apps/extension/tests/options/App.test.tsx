@@ -30,8 +30,8 @@ describe('Options App — Tag Counts', () => {
       expect(countValues).toContain('2')
       expect(countValues).toContain('1')
     })
-    expect(screen.getByText('dev')).toBeInTheDocument()
-    expect(screen.getByText('react')).toBeInTheDocument()
+    expect(screen.getAllByText('dev').length).toBeGreaterThanOrEqual(1)
+    expect(screen.getAllByText('react').length).toBeGreaterThanOrEqual(1)
   })
 
   it('calls getTagCounts to load tag data', async () => {
