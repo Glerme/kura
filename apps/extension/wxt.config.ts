@@ -6,7 +6,10 @@ export default defineConfig({
     name: '__MSG_ext_name__',
     description: '__MSG_ext_description__',
     default_locale: 'en',
-    permissions: ['contextMenus', 'storage', 'tabs'],
+    permissions: ['contextMenus', 'tabs'],
     action: {},
+    content_security_policy: {
+      extension_pages: "script-src 'self'; object-src 'self'; connect-src 'self' https://www.google.com;",
+    },
   },
 })

@@ -3,6 +3,7 @@ import { getAllLinks, getTagCounts, deleteLink, updateLink } from '../../lib/db'
 import { exportJSON, importJSON, importBookmarksHTML } from '../../lib/import-export'
 import { domainFromUrl } from '../../lib/fetch-title'
 import type { KuraLink, FilterState } from '../../lib/types'
+import { isSafeUrl } from '../../lib/url-utils'
 import './App.css'
 
 export default function App() {
@@ -191,6 +192,7 @@ export default function App() {
                 <div key={link.id} className={`row ${isExpanded ? 'open' : ''}`}>
                   <div className="row-main" onClick={() => {
                     if (isNote) { setExpandedId(isExpanded ? null : link.id); return }
+                    if (!isSafeUrl(link.url)) return
                     window.open(link.url, '_blank')
                   }}>
                     {isNote
@@ -221,7 +223,7 @@ export default function App() {
                   {isExpanded && (
                     <div className="row-actions">
                       {!isNote && (
-                        <button className="act-btn" onClick={() => window.open(link.url, '_blank')}>↗ Abrir</button>
+                        <button className="act-btn" onClick={() => { if (isSafeUrl(link.url)) window.open(link.url, '_blank') }}>↗ Abrir</button>
                       )}
                       {!link.readAt && (
                         <button className="act-btn" onClick={() => handleMarkRead(link.id)}>✓ Lido</button>
@@ -248,7 +250,7 @@ function FaviconImg({ domain }: { domain: string }) {
   return (
     <img
       className="favicon"
-      src={`https://www.google.com/s2/favicons?domain=${domain}&sz=32`}
+      src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=32`}
       onError={() => setErr(true)}
       alt=""
     />

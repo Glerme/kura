@@ -4,6 +4,7 @@ import { addLink, getLinkByUrl, updateLink } from '../../lib/db'
 import { parseTags } from '../../lib/tags'
 import { fetchTitle, domainFromUrl } from '../../lib/fetch-title'
 import type { KuraLink } from '../../lib/types'
+import { isSafeUrl } from '../../lib/url-utils'
 
 export function SaveTab() {
   const [url, setUrl] = useState('')
@@ -12,6 +13,7 @@ export function SaveTab() {
   const [tagsInput, setTagsInput] = useState('')
   const [existing, setExisting] = useState<KuraLink | null>(null)
   const [saved, setSaved] = useState(false)
+  const [urlError, setUrlError] = useState(false)
 
   useEffect(() => {
     browser.tabs.query({ active: true, currentWindow: true }).then(async ([tab]) => {
@@ -26,8 +28,10 @@ export function SaveTab() {
   }, [])
 
   async function handleSave() {
+    if (url && !isSafeUrl(url)) { setUrlError(true); return }
+    setUrlError(false)
     const domain = domainFromUrl(url)
-    const favicon = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`
+    const favicon = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=32`
     const found = await getLinkByUrl(url)
     if (found) { setExisting(found); return }
     await addLink({ url, title, comment: comment || undefined, tags: parseTags(tagsInput), favicon })
@@ -76,6 +80,8 @@ export function SaveTab() {
             placeholder="dev, leitura"
           />
         </div>
+
+        {urlError && <div className="alert">URL inválida ou não permitida.</div>}
 
         {existing && (
           <div className="alert">

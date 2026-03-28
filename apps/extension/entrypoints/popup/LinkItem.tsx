@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { updateLink, deleteLink } from '../../lib/db'
 import { domainFromUrl } from '../../lib/fetch-title'
 import type { KuraLink } from '../../lib/types'
+import { isSafeUrl } from '../../lib/url-utils'
 
 interface Props {
   link: KuraLink
@@ -18,6 +19,7 @@ export function LinkItem({ link, isExpanded, onToggle, onRefresh }: Props) {
 
   function openLink() {
     if (isNote) return
+    if (!isSafeUrl(link.url)) return
     browser.tabs.create({ url: link.url })
   }
 
@@ -91,7 +93,7 @@ function FaviconImg({ domain }: { domain: string }) {
   return (
     <img
       className="favicon"
-      src={`https://www.google.com/s2/favicons?domain=${domain}&sz=32`}
+      src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=32`}
       onError={() => setError(true)}
       alt=""
     />

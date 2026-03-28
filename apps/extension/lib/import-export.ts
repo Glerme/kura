@@ -1,5 +1,8 @@
 import type { KuraLink } from './types'
 import { getLinkByUrl, addLink } from './db'
+import { isSafeUrl } from './url-utils'
+
+const MAX_LEN = 2048
 
 function readFileAsText(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -22,24 +25,28 @@ export async function importJSON(file: File): Promise<{ imported: number; skippe
   let skipped = 0
 
   for (const item of data) {
-    if (!item.url || !item.title) {
+    const url = typeof item.url === 'string' ? item.url.trim().slice(0, MAX_LEN) : null
+    const title = typeof item.title === 'string' ? item.title.trim().slice(0, 500) : null
+    if (!url || !title || !isSafeUrl(url)) {
       skipped++
       continue
     }
 
-    const existing = await getLinkByUrl(item.url)
+    const existing = await getLinkByUrl(url)
     if (existing) {
       skipped++
       continue
     }
 
     await addLink({
-      url: item.url,
-      title: item.title,
-      tags: Array.isArray(item.tags) ? item.tags : [],
-      comment: item.comment ?? undefined,
-      favicon: item.favicon ?? undefined,
-      readAt: item.readAt ?? undefined,
+      url,
+      title,
+      tags: Array.isArray(item.tags)
+        ? item.tags.filter((t: unknown): t is string => typeof t === 'string').map((t: string) => t.slice(0, 100))
+        : [],
+      comment: typeof item.comment === 'string' ? item.comment.slice(0, 2000) : undefined,
+      favicon: typeof item.favicon === 'string' ? item.favicon.slice(0, MAX_LEN) : undefined,
+      readAt: typeof item.readAt === 'number' ? item.readAt : undefined,
     })
     imported++
   }
@@ -60,7 +67,7 @@ export async function importBookmarksHTML(file: File): Promise<{ imported: numbe
   for (const a of anchors) {
     const url = a.getAttribute('href')
     const title = a.textContent?.trim()
-    if (!url || !title) {
+    if (!url || !title || !isSafeUrl(url)) {
       skipped++
       continue
     }

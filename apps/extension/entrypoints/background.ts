@@ -35,7 +35,7 @@ export default defineBackground(() => {
     }
 
     const domain = domainFromUrl(url)
-    const favicon = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`
+    const favicon = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=32`
     const link = await addLink({ url, title, tags: [], favicon })
     browser.tabs.sendMessage(tabId, { type: 'LINK_SAVED', link }).catch(() => {})
   })

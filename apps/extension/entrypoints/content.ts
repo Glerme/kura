@@ -4,6 +4,8 @@ import { parseTags } from '../lib/tags'
 import type { KuraLink } from '../lib/types'
 
 export default defineContentScript({
+  // <all_urls> is required so the toast appears on any page after saving.
+  // Keep this file minimal — any bug here affects every page the user visits.
   matches: ['<all_urls>'],
   main() {
     let host: HTMLElement | null = null
