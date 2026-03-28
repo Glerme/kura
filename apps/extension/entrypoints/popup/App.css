@@ -13,7 +13,7 @@ body {
 }
 
 /* Background blobs — sem eles o blur não aparece */
-.popup { width: 300px; position: relative; overflow: hidden; }
+.popup { width: 300px; min-height: 480px; position: relative; overflow: hidden; }
 .blob {
   position: fixed;
   border-radius: 50%;
