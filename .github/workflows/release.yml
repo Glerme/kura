@@ -78,3 +78,5 @@ jobs:
             apps/extension/.output/kura-extension-*-firefox.zip
             apps/extension/.output/kura-chrome-sideload.zip
             apps/extension/.output/kura-firefox-sideload.zip
+          fail_on_unmatched_files: false
+          overwrite: true
