@@ -1,21 +1,22 @@
 import { useState, useEffect, useMemo } from 'react'
-import { getAllLinks, getAllTags, deleteLink, updateLink } from '../../lib/db'
+import { getAllLinks, getTagCounts, deleteLink, updateLink } from '../../lib/db'
 import { domainFromUrl } from '../../lib/fetch-title'
 import type { KuraLink, FilterState } from '../../lib/types'
 import './App.css'
 
 export default function App() {
   const [links, setLinks] = useState<KuraLink[]>([])
-  const [tags, setTags] = useState<string[]>([])
+  const [tagCounts, setTagCounts] = useState<Record<string, number>>({})
+  const tags = useMemo(() => Object.keys(tagCounts).sort(), [tagCounts])
   const [filter, setFilter] = useState<FilterState>({ type: 'all' })
   const [search, setSearch] = useState('')
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [copied, setCopied] = useState<string | null>(null)
 
   async function load() {
-    const [l, t] = await Promise.all([getAllLinks(), getAllTags()])
+    const [l, tc] = await Promise.all([getAllLinks(), getTagCounts()])
     setLinks(l)
-    setTags(t)
+    setTagCounts(tc)
   }
 
   useEffect(() => { load() }, [])
@@ -98,9 +99,12 @@ export default function App() {
             {tags.map(tag => (
               <button
                 key={tag}
-                className={`nav-item ${filter.type === 'tag' && filter.tag === tag ? 'active' : ''}`}
+                className={`nav-item tag-item ${filter.type === 'tag' && filter.tag === tag ? 'active' : ''}`}
                 onClick={() => setFilter({ type: 'tag', tag })}
-              >{tag}</button>
+              >
+                {tag}
+                <span className="tag-count">{tagCounts[tag]}</span>
+              </button>
             ))}
           </div>
         )}
@@ -142,7 +146,7 @@ export default function App() {
                       <div className="row-title">{link.title}</div>
                       <div className="row-meta">
                         <span className="row-domain">{domain}</span>
-                        {link.tags.map(t => <span key={t} className="tag">{t}</span>)}
+                        {link.tags.map(t => <span key={t} className="tag">#{t}</span>)}
                       </div>
                       {link.comment && isExpanded && (
                         <div className="row-comment">"{link.comment}"</div>
