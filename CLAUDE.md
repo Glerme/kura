@@ -29,6 +29,17 @@ Extensão Chrome (WXT + React + Tailwind) para salvar links com comentários e t
 - **URL duplicada:** avisa que já existe e pergunta se quer atualizar o link existente (mantém id/savedAt, atualiza título/comentário/tags)
 - **Aba Salvar:** campos URL (editável, pré-preenchido com a página atual), Título, Comentário (textarea redimensionável), Tags + botão Salvar
 
+## Fluxo de Desenvolvimento
+
+### TDD — Test Driven Development
+- **Sempre escrever os testes antes da feature.** Nunca criar código de produção sem antes ter um teste falhando que justifique a mudança.
+- Fluxo obrigatório: **Red → Green → Refactor**
+  1. Escrever o teste que falha (Red)
+  2. Implementar o mínimo de código para o teste passar (Green)
+  3. Refatorar se necessário, mantendo os testes verdes (Refactor)
+- Os testes ficam em `apps/extension/tests/` espelhando a estrutura de `entrypoints/` e `lib/`
+- Usar Vitest + React Testing Library para todos os testes
+
 ## Estado Atual
 - Lib layer completa: `db.ts`, `fetch-title.ts`, `tags.ts`, `types.ts`, `i18n.ts`
 - Popup ainda é scaffold padrão do WXT (a ser implementado)
