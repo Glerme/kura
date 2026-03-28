@@ -45,52 +45,56 @@ export function SaveTab() {
 
   return (
     <>
-      <div className="field">
-        <label className="g-label">URL</label>
-        <input
-          className="g-input mono"
-          value={url}
-          onChange={e => { setUrl(e.target.value); setExisting(null) }}
-        />
-      </div>
-      <div className="field">
-        <label className="g-label">Título</label>
-        <input className="g-input" value={title} onChange={e => setTitle(e.target.value)} />
-      </div>
-      <div className="field">
-        <label className="g-label">Comentário</label>
-        <textarea
-          className="g-textarea"
-          value={comment}
-          onChange={e => setComment(e.target.value)}
-          placeholder="Adicione um comentário..."
-        />
-      </div>
-      <div className="field">
-        <label className="g-label">Tags</label>
-        <input
-          className="g-input"
-          value={tagsInput}
-          onChange={e => setTagsInput(e.target.value)}
-          placeholder="dev, leitura"
-        />
-      </div>
-
-      {existing && (
-        <div className="alert">
-          Este link já foi salvo.
-          <div className="alert-actions">
-            <button className="g-btn ghost" onClick={() => setExisting(null)}>Cancelar</button>
-            <button className="g-btn" onClick={handleUpdate}>Atualizar</button>
-          </div>
+      <div className="tab-body">
+        <div className="field">
+          <label className="g-label">URL</label>
+          <input
+            className="g-input mono"
+            value={url}
+            onChange={e => { setUrl(e.target.value); setExisting(null) }}
+          />
         </div>
-      )}
+        <div className="field">
+          <label className="g-label">Título</label>
+          <input className="g-input" value={title} onChange={e => setTitle(e.target.value)} />
+        </div>
+        <div className="field">
+          <label className="g-label">Comentário</label>
+          <textarea
+            className="g-textarea"
+            value={comment}
+            onChange={e => setComment(e.target.value)}
+            placeholder="Adicione um comentário..."
+          />
+        </div>
+        <div className="field">
+          <label className="g-label">Tags</label>
+          <input
+            className="g-input"
+            value={tagsInput}
+            onChange={e => setTagsInput(e.target.value)}
+            placeholder="dev, leitura"
+          />
+        </div>
 
-      {saved && <div className="alert">✓ Salvo!</div>}
+        {existing && (
+          <div className="alert">
+            Este link já foi salvo.
+            <div className="alert-actions">
+              <button className="g-btn ghost" onClick={() => setExisting(null)}>Cancelar</button>
+              <button className="g-btn" onClick={handleUpdate}>Atualizar</button>
+            </div>
+          </div>
+        )}
 
-      {!existing && !saved && (
-        <button className="g-btn" onClick={handleSave}>Salvar esta página</button>
-      )}
+        {saved && <div className="alert">✓ Salvo!</div>}
+      </div>
+
+      <div className="popup-footer">
+        {!existing && !saved && (
+          <button className="g-btn" onClick={handleSave}>Salvar esta página</button>
+        )}
+      </div>
     </>
   )
 }
