@@ -116,3 +116,84 @@ describe('importJSON', () => {
     expect(result).toEqual({ imported: 1, skipped: 2 })
   })
 })
+
+describe('importBookmarksHTML', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    vi.mocked(getLinkByUrl).mockResolvedValue(undefined)
+  })
+
+  const bookmarksHTML = `<!DOCTYPE NETSCAPE-Bookmark-file-1>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<TITLE>Bookmarks</TITLE>
+<H1>Bookmarks</H1>
+<DL><p>
+  <DT><H3>Dev</H3>
+  <DL><p>
+    <DT><A HREF="https://react.dev" ADD_DATE="1700000000">React Docs</A>
+    <DT><A HREF="https://vuejs.org" ADD_DATE="1700001000">Vue.js</A>
+  </DL><p>
+  <DT><H3>News</H3>
+  <DL><p>
+    <DT><A HREF="https://hn.com" ADD_DATE="1700002000">Hacker News</A>
+  </DL><p>
+</DL><p>`
+
+  it('imports bookmarks with folder names as tags', async () => {
+    const { importBookmarksHTML } = await import('../../lib/import-export')
+    const file = new File([bookmarksHTML], 'bookmarks.html', { type: 'text/html' })
+
+    const result = await importBookmarksHTML(file)
+
+    expect(result).toEqual({ imported: 3, skipped: 0 })
+    expect(addLink).toHaveBeenCalledTimes(3)
+    expect(addLink).toHaveBeenCalledWith(
+      expect.objectContaining({
+        url: 'https://react.dev',
+        title: 'React Docs',
+        tags: ['Dev'],
+      })
+    )
+    expect(addLink).toHaveBeenCalledWith(
+      expect.objectContaining({
+        url: 'https://hn.com',
+        tags: ['News'],
+      })
+    )
+  })
+
+  it('skips duplicate URLs', async () => {
+    vi.mocked(getLinkByUrl).mockImplementation(async (url) =>
+      url === 'https://react.dev'
+        ? { id: 'x', url: 'https://react.dev', title: 'R', tags: [], savedAt: 1 }
+        : undefined
+    )
+
+    const { importBookmarksHTML } = await import('../../lib/import-export')
+    const file = new File([bookmarksHTML], 'bookmarks.html', { type: 'text/html' })
+
+    const result = await importBookmarksHTML(file)
+
+    expect(result).toEqual({ imported: 2, skipped: 1 })
+  })
+
+  it('imports bookmarks without folder (no tags)', async () => {
+    const { importBookmarksHTML } = await import('../../lib/import-export')
+    const simpleHTML = `<!DOCTYPE NETSCAPE-Bookmark-file-1>
+<DL><p>
+  <DT><A HREF="https://example.com">Example</A>
+</DL><p>`
+    const file = new File([simpleHTML], 'bookmarks.html', { type: 'text/html' })
+
+    const result = await importBookmarksHTML(file)
+
+    expect(result).toEqual({ imported: 1, skipped: 0 })
+    expect(addLink).toHaveBeenCalledWith(
+      expect.objectContaining({
+        url: 'https://example.com',
+        title: 'Example',
+        tags: [],
+      })
+    )
+  })
+})

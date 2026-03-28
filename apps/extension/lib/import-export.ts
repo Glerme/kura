@@ -47,6 +47,55 @@ export async function importJSON(file: File): Promise<{ imported: number; skippe
   return { imported, skipped }
 }
 
+export async function importBookmarksHTML(file: File): Promise<{ imported: number; skipped: number }> {
+  const text = await readFileAsText(file)
+  const parser = new DOMParser()
+  const doc = parser.parseFromString(text, 'text/html')
+
+  let imported = 0
+  let skipped = 0
+
+  const anchors = doc.querySelectorAll('a[href]')
+
+  for (const a of anchors) {
+    const url = a.getAttribute('href')
+    const title = a.textContent?.trim()
+    if (!url || !title) {
+      skipped++
+      continue
+    }
+
+    // Find parent folder: walk up to find the closest <DL> parent, then its preceding <DT><H3>
+    const tags: string[] = []
+    const parentDl = a.closest('dl')
+    if (parentDl) {
+      const dt = parentDl.parentElement
+      if (dt) {
+        const h3 = dt.querySelector(':scope > h3')
+        if (h3?.textContent) {
+          tags.push(h3.textContent.trim())
+        }
+      }
+    }
+
+    const existing = await getLinkByUrl(url)
+    if (existing) {
+      skipped++
+      continue
+    }
+
+    await addLink({
+      url,
+      title,
+      tags,
+      readAt: undefined,
+    })
+    imported++
+  }
+
+  return { imported, skipped }
+}
+
 export function exportJSON(links: KuraLink[]): void {
   const json = JSON.stringify(links, null, 2)
   const blob = new Blob([json], { type: 'application/json' })
