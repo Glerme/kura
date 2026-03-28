@@ -2,7 +2,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body, #root {
-  width: 300px;
+  width: 380px;
   background: #080808;
 }
 
@@ -13,7 +13,7 @@ body {
 }
 
 /* Background blobs — sem eles o blur não aparece */
-.popup { width: 300px; min-height: 480px; position: relative; overflow: hidden; }
+.popup { width: 380px; min-height: 560px; position: relative; overflow: hidden; }
 .blob {
   position: fixed;
   border-radius: 50%;
