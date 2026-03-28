@@ -1,5 +1,6 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { getAllLinks, getTagCounts, deleteLink, updateLink } from '../../lib/db'
+import { exportJSON, importJSON, importBookmarksHTML } from '../../lib/import-export'
 import { domainFromUrl } from '../../lib/fetch-title'
 import type { KuraLink, FilterState } from '../../lib/types'
 import './App.css'
@@ -12,6 +13,8 @@ export default function App() {
   const [search, setSearch] = useState('')
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [copied, setCopied] = useState<string | null>(null)
+  const [importBanner, setImportBanner] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   async function load() {
     const [l, tc] = await Promise.all([getAllLinks(), getTagCounts()])
@@ -56,6 +59,30 @@ export default function App() {
       setCopied(link.id)
       setTimeout(() => setCopied(null), 1500)
     }
+  }
+
+  function handleExport() {
+    exportJSON(links)
+  }
+
+  async function handleImport(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    try {
+      const result = file.name.endsWith('.json')
+        ? await importJSON(file)
+        : await importBookmarksHTML(file)
+
+      setImportBanner(`${result.imported} importados, ${result.skipped} ignorados`)
+      setTimeout(() => setImportBanner(null), 4000)
+      load()
+    } catch {
+      setImportBanner('Erro ao importar arquivo')
+      setTimeout(() => setImportBanner(null), 4000)
+    }
+
+    if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
   function relativeDate(ts: number) {
@@ -108,10 +135,34 @@ export default function App() {
             ))}
           </div>
         )}
+        <div className="sidebar-footer">
+          <button
+            className="nav-item footer-btn"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            ↑ Importar
+          </button>
+          <button
+            className="nav-item footer-btn"
+            onClick={handleExport}
+          >
+            ↓ Exportar
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json,.html"
+            hidden
+            onChange={handleImport}
+          />
+        </div>
       </aside>
 
       {/* main */}
       <main className="main">
+        {importBanner && (
+          <div className="import-banner">{importBanner}</div>
+        )}
         <div className="topbar">
           <input
             className="search"

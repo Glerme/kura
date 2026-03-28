@@ -266,3 +266,32 @@ html, body, #root {
   font-size: 10px;
   color: rgba(255,255,255,0.15);
 }
+
+/* Sidebar footer — import/export */
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.footer-btn {
+  font-size: 11px !important;
+  color: rgba(255,255,255,0.3) !important;
+}
+.footer-btn:hover {
+  color: rgba(255,255,255,0.6) !important;
+}
+
+/* Import result banner */
+.import-banner {
+  background: rgba(80,200,120,0.12);
+  border: 1px solid rgba(80,200,120,0.25);
+  border-radius: 10px;
+  color: rgba(80,200,120,0.9);
+  font-size: 12px;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  text-align: center;
+}
