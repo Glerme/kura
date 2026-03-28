@@ -18,7 +18,7 @@ export default defineBackground(() => {
       const title = text.length > 80 ? text.slice(0, 80) + '…' : text
       const comment = text.length > 80 ? text : undefined
       const link = await addLink({ url: `kura://note/${Date.now()}`, title, comment, tags: [], favicon: '' })
-      browser.tabs.sendMessage(tabId, { type: 'LINK_SAVED', link })
+      browser.tabs.sendMessage(tabId, { type: 'LINK_SAVED', link }).catch(() => {})
       return
     }
 
@@ -30,14 +30,14 @@ export default defineBackground(() => {
     const existing = await getLinkByUrl(url)
 
     if (existing) {
-      browser.tabs.sendMessage(tabId, { type: 'ALREADY_SAVED', link: existing })
+      browser.tabs.sendMessage(tabId, { type: 'ALREADY_SAVED', link: existing }).catch(() => {})
       return
     }
 
     const domain = domainFromUrl(url)
     const favicon = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`
     const link = await addLink({ url, title, tags: [], favicon })
-    browser.tabs.sendMessage(tabId, { type: 'LINK_SAVED', link })
+    browser.tabs.sendMessage(tabId, { type: 'LINK_SAVED', link }).catch(() => {})
   })
 
   browser.runtime.onMessage.addListener((msg) => {
