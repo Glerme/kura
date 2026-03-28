@@ -2,6 +2,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import type { KuraLink } from '../../lib/types'
 import { exportJSON } from '../../lib/import-export'
+import { getLinkByUrl, addLink } from '../../lib/db'
 
 vi.mock('../../lib/db', () => ({
   getLinkByUrl: vi.fn().mockResolvedValue(undefined),
@@ -50,5 +51,68 @@ describe('exportJSON', () => {
 
     const blobArg = createURLMock.mock.calls[0][0] as Blob
     expect(blobArg.type).toBe('application/json')
+  })
+})
+
+describe('importJSON', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    vi.mocked(getLinkByUrl).mockResolvedValue(undefined)
+  })
+
+  it('imports valid JSON links and returns counts', async () => {
+    const { importJSON } = await import('../../lib/import-export')
+    const data = JSON.stringify([
+      { url: 'https://new1.com', title: 'New 1', tags: ['a'] },
+      { url: 'https://new2.com', title: 'New 2', tags: [] },
+    ])
+    const file = new File([data], 'test.json', { type: 'application/json' })
+
+    const result = await importJSON(file)
+
+    expect(result).toEqual({ imported: 2, skipped: 0 })
+    expect(addLink).toHaveBeenCalledTimes(2)
+  })
+
+  it('skips duplicates by URL', async () => {
+    vi.mocked(getLinkByUrl).mockImplementation(async (url) =>
+      url === 'https://dup.com'
+        ? { id: 'x', url: 'https://dup.com', title: 'Dup', tags: [], savedAt: 1 }
+        : undefined
+    )
+
+    const { importJSON } = await import('../../lib/import-export')
+    const data = JSON.stringify([
+      { url: 'https://dup.com', title: 'Dup', tags: [] },
+      { url: 'https://fresh.com', title: 'Fresh', tags: [] },
+    ])
+    const file = new File([data], 'test.json', { type: 'application/json' })
+
+    const result = await importJSON(file)
+
+    expect(result).toEqual({ imported: 1, skipped: 1 })
+    expect(addLink).toHaveBeenCalledTimes(1)
+  })
+
+  it('rejects invalid JSON (not an array)', async () => {
+    const { importJSON } = await import('../../lib/import-export')
+    const data = JSON.stringify({ url: 'https://x.com', title: 'X' })
+    const file = new File([data], 'test.json', { type: 'application/json' })
+
+    await expect(importJSON(file)).rejects.toThrow('Invalid format')
+  })
+
+  it('skips items missing url or title', async () => {
+    const { importJSON } = await import('../../lib/import-export')
+    const data = JSON.stringify([
+      { url: 'https://ok.com', title: 'OK', tags: [] },
+      { url: 'https://no-title.com' },
+      { title: 'No URL' },
+    ])
+    const file = new File([data], 'test.json', { type: 'application/json' })
+
+    const result = await importJSON(file)
+
+    expect(result).toEqual({ imported: 1, skipped: 2 })
   })
 })
