@@ -13,7 +13,7 @@ body {
 }
 
 /* Background blobs — sem eles o blur não aparece */
-.popup { width: 380px; min-height: 560px; position: relative; overflow: hidden; }
+.popup { width: 380px; min-height: 560px; position: relative; overflow: hidden; display: flex; flex-direction: column; }
 .blob {
   position: fixed;
   border-radius: 50%;
@@ -29,6 +29,7 @@ body {
 .panel {
   position: relative;
   z-index: 1;
+  flex: 1;
   background: rgba(255,255,255,0.06);
   backdrop-filter: blur(32px) saturate(180%);
   -webkit-backdrop-filter: blur(32px) saturate(180%);
