@@ -24,6 +24,12 @@ export default function App() {
 
   useEffect(() => { load() }, [])
 
+  useEffect(() => {
+    if (!importBanner) return
+    const timer = setTimeout(() => setImportBanner(null), 4000)
+    return () => clearTimeout(timer)
+  }, [importBanner])
+
   const filtered = useMemo(() => {
     let result = links
     if (filter.type === 'unread') result = result.filter(l => !l.readAt)
@@ -75,11 +81,9 @@ export default function App() {
         : await importBookmarksHTML(file)
 
       setImportBanner(`${result.imported} importados, ${result.skipped} ignorados`)
-      setTimeout(() => setImportBanner(null), 4000)
       load()
     } catch {
       setImportBanner('Erro ao importar arquivo')
-      setTimeout(() => setImportBanner(null), 4000)
     }
 
     if (fileInputRef.current) fileInputRef.current.value = ''
