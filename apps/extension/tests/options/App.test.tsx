@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, act } from '@testing-library/react'
 import { fireEvent } from '@testing-library/react'
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
 import App from '../../entrypoints/options/App'
@@ -116,7 +116,7 @@ describe('Options App — Import/Export', () => {
     fireEvent.change(fileInput)
 
     await waitFor(() => screen.getByText(/3 importados/))
-    vi.advanceTimersByTime(4000)
+    await act(async () => { vi.advanceTimersByTime(4001) })
     await waitFor(() => {
       expect(screen.queryByText(/3 importados/)).not.toBeInTheDocument()
     })
