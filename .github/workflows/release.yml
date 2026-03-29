@@ -37,6 +37,11 @@ jobs:
       - name: Build & zip Firefox extension
         run: pnpm --filter kura-extension zip:firefox
 
+      - name: Create Firefox .xpi
+        run: |
+          FIREFOX_ZIP=$(ls apps/extension/.output/kura-extension-*-firefox.zip | head -1)
+          cp "$FIREFOX_ZIP" "${FIREFOX_ZIP%.zip}.xpi"
+
       - name: Package builds for sideloading
         run: |
           cd apps/extension/.output
@@ -63,6 +68,7 @@ jobs:
             echo "|---|---|"
             echo "| \`kura-extension-${GITHUB_REF_NAME#v}-chrome.zip\` | Upload na Chrome Web Store |"
             echo "| \`kura-extension-${GITHUB_REF_NAME#v}-firefox.zip\` | Upload no Firefox Add-ons |"
+            echo "| \`kura-extension-${GITHUB_REF_NAME#v}-firefox.xpi\` | Instalação direta no Firefox |"
             echo "| \`kura-chrome-sideload.zip\` | Sideload no Chrome (\`chrome://extensions\` → Carregar sem compactação) |"
             echo "| \`kura-firefox-sideload.zip\` | Sideload no Firefox (\`about:debugging\` → Carregar extensão temporária) |"
             echo "EOF"
@@ -76,6 +82,7 @@ jobs:
           files: |
             apps/extension/.output/kura-extension-*-chrome.zip
             apps/extension/.output/kura-extension-*-firefox.zip
+            apps/extension/.output/kura-extension-*-firefox.xpi
             apps/extension/.output/kura-chrome-sideload.zip
             apps/extension/.output/kura-firefox-sideload.zip
           fail_on_unmatched_files: false
