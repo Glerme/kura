@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="apps/extension/assets/Kura.png" alt="Kura" width="96" />
+</p>
+
 # Kura
 
 > Salve links, textos e notas diretamente do browser — com tags, comentários e lista de leitura. Rápido, local e sem contas.
