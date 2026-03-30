@@ -4,6 +4,7 @@ import { exportJSON, importJSON, importBookmarksHTML } from '../../lib/import-ex
 import { domainFromUrl } from '../../lib/fetch-title'
 import type { KuraLink, FilterState } from '../../lib/types'
 import { isSafeUrl } from '../../lib/url-utils'
+import kuraLogo from '~/assets/Kura.png'
 import './App.css'
 
 export default function App() {
@@ -112,7 +113,7 @@ export default function App() {
       {/* sidebar */}
       <aside className="sidebar">
         <div className="sidebar-logo">
-          <div className="header-dot" />
+          <img src={kuraLogo} alt="Kura" className="header-logo" />
           KURA
         </div>
         <nav className="sidebar-nav">

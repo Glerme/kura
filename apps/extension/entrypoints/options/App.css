@@ -53,11 +53,10 @@ html, body, #root {
   margin-bottom: 20px;
 }
 
-.header-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.5);
-  box-shadow: 0 0 6px rgba(255,255,255,0.4);
+.header-logo {
+  width: 18px; height: 18px;
+  border-radius: 4px;
+  object-fit: contain;
   flex-shrink: 0;
 }
 

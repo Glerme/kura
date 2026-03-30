@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useT } from "@/lib/i18n";
 
 export default function Footer() {
@@ -40,14 +41,12 @@ export default function Footer() {
               marginBottom: 6,
             }}
           >
-            <span
-              style={{
-                width: 5,
-                height: 5,
-                borderRadius: "50%",
-                background: "rgba(255,255,255,0.4)",
-                display: "inline-block",
-              }}
+            <Image
+              src="/Kura.png"
+              alt="Kura"
+              width={18}
+              height={18}
+              style={{ borderRadius: 4, opacity: 0.7 }}
             />
             KURA
           </div>

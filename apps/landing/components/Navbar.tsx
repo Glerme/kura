@@ -23,7 +23,8 @@ export default function Navbar() {
         right: 0,
         zIndex: 100,
         padding: "0 24px",
-        transition: "background 0.3s, border-color 0.3s",
+        animation: "fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) 100ms both",
+        transition: "background 0.3s, border-color 0.3s, backdrop-filter 0.3s, -webkit-backdrop-filter 0.3s",
         background: scrolled
           ? "rgba(8,8,8,0.85)"
           : "transparent",
@@ -76,40 +77,8 @@ export default function Navbar() {
             gap: 32,
           }}
         >
-          <a
-            href="#features"
-            style={{
-              color: "var(--muted)",
-              textDecoration: "none",
-              fontSize: 14,
-              transition: "color 0.15s",
-            }}
-            onMouseEnter={(e) =>
-              ((e.target as HTMLElement).style.color = "var(--text)")
-            }
-            onMouseLeave={(e) =>
-              ((e.target as HTMLElement).style.color = "var(--muted)")
-            }
-          >
-            {t.nav_features}
-          </a>
-          <a
-            href="#faq"
-            style={{
-              color: "var(--muted)",
-              textDecoration: "none",
-              fontSize: 14,
-              transition: "color 0.15s",
-            }}
-            onMouseEnter={(e) =>
-              ((e.target as HTMLElement).style.color = "var(--text)")
-            }
-            onMouseLeave={(e) =>
-              ((e.target as HTMLElement).style.color = "var(--muted)")
-            }
-          >
-            {t.nav_faq}
-          </a>
+          <a href="#features" className="nav-link">{t.nav_features}</a>
+          <a href="#faq" className="nav-link">{t.nav_faq}</a>
           <a href="#hero" className="btn-primary" style={{ padding: "8px 18px", fontSize: 13 }}>
             {t.nav_install}
           </a>

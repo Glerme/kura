@@ -2,16 +2,21 @@
 
 import { useState } from "react";
 import { useT } from "@/lib/i18n";
+import { useScrollReveal, useScrollRevealChildren } from "@/hooks/useScrollReveal";
 
 export default function Faq() {
   const { t } = useT();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const titleRef = useScrollReveal();
+  const listRef = useScrollRevealChildren<HTMLDivElement>(90);
 
   return (
     <section id="faq" className="section">
       <div className="section-inner">
         <div style={{ maxWidth: 680, margin: "0 auto" }}>
           <h2
+            ref={titleRef}
+            className="reveal"
             style={{
               fontSize: "clamp(28px, 4vw, 44px)",
               fontWeight: 700,
@@ -24,13 +29,13 @@ export default function Faq() {
             {t.faq_title}
           </h2>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div ref={listRef} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {(t.faq as unknown as { q: string; a: string }[]).map((item, i) => {
               const isOpen = openIndex === i;
               return (
                 <div
                   key={i}
-                  className="glass"
+                  className="glass reveal"
                   style={{
                     borderRadius: 14,
                     overflow: "hidden",
@@ -77,21 +82,23 @@ export default function Faq() {
 
                   <div
                     style={{
-                      maxHeight: isOpen ? 300 : 0,
-                      overflow: "hidden",
-                      transition: "max-height 0.3s ease",
+                      display: "grid",
+                      gridTemplateRows: isOpen ? "1fr" : "0fr",
+                      transition: "grid-template-rows 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
                     }}
                   >
-                    <p
-                      style={{
-                        padding: "0 20px 18px",
-                        fontSize: 14,
-                        color: "var(--muted)",
-                        lineHeight: 1.7,
-                      }}
-                    >
-                      {item.a}
-                    </p>
+                    <div style={{ overflow: "hidden" }}>
+                      <p
+                        style={{
+                          padding: "0 20px 18px",
+                          fontSize: 14,
+                          color: "var(--muted)",
+                          lineHeight: 1.7,
+                        }}
+                      >
+                        {item.a}
+                      </p>
+                    </div>
                   </div>
                 </div>
               );

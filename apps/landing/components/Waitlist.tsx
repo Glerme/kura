@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { useT } from "@/lib/i18n";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 export default function Waitlist() {
   const { t } = useT();
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const cardRef = useScrollReveal();
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -17,7 +19,8 @@ export default function Waitlist() {
     <section className="section">
       <div className="section-inner">
         <div
-          className="glass"
+          ref={cardRef}
+          className="glass reveal"
           style={{
             borderRadius: 24,
             padding: "clamp(40px, 6vw, 72px)",
@@ -108,6 +111,7 @@ export default function Waitlist() {
                       color: "rgba(255,255,255,0.7)",
                       fontSize: 15,
                       lineHeight: 1.6,
+                      animation: "fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both",
                     }}
                   >
                     🎉

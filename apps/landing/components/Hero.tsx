@@ -2,6 +2,10 @@
 
 import { useT } from "@/lib/i18n";
 
+const anim = (delayMs: number): React.CSSProperties => ({
+  animation: `fadeInUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) ${delayMs}ms both`,
+});
+
 export default function Hero() {
   const { t } = useT();
 
@@ -25,6 +29,7 @@ export default function Hero() {
             fontSize: 12,
             color: "var(--muted)",
             marginBottom: 40,
+            ...anim(0),
           }}
         >
           <span
@@ -49,6 +54,7 @@ export default function Hero() {
             letterSpacing: "-1.5px",
             color: "rgba(255,255,255,0.92)",
             marginBottom: 24,
+            ...anim(60),
           }}
         >
           {t.hero_headline}
@@ -63,6 +69,7 @@ export default function Hero() {
             marginBottom: 48,
             maxWidth: 560,
             margin: "0 auto 48px",
+            ...anim(120),
           }}
         >
           {t.hero_sub}
@@ -76,6 +83,7 @@ export default function Hero() {
             justifyContent: "center",
             flexWrap: "wrap",
             marginBottom: 20,
+            ...anim(180),
           }}
         >
           <a
@@ -102,7 +110,7 @@ export default function Hero() {
           </a>
         </div>
 
-        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.20)" }}>
+        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.20)", ...anim(240) }}>
           {t.hero_cta_note}
         </p>
 
@@ -115,6 +123,7 @@ export default function Hero() {
             alignItems: "center",
             gap: 8,
             opacity: 0.25,
+            ...anim(300),
           }}
         >
           <div
@@ -127,12 +136,6 @@ export default function Hero() {
           />
         </div>
 
-        <style>{`
-          @keyframes pulse {
-            0%, 100% { opacity: 0.2; transform: scaleY(1); }
-            50%       { opacity: 0.6; transform: scaleY(1.15); }
-          }
-        `}</style>
       </div>
     </section>
   );

@@ -1,11 +1,14 @@
 "use client";
 
 import { useT } from "@/lib/i18n";
+import { useScrollReveal, useScrollRevealChildren } from "@/hooks/useScrollReveal";
 
 const icons = ["🔖", "🏷️", "📤", "☁️"];
 
 export default function Features() {
   const { t } = useT();
+  const headerRef = useScrollReveal();
+  const gridRef = useScrollRevealChildren<HTMLDivElement>(110);
 
   const cards = [
     { icon: icons[0], title: t.feat1_title, desc: t.feat1_desc },
@@ -18,7 +21,7 @@ export default function Features() {
     <section id="features" className="section">
       <div className="section-inner">
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: 64 }}>
+        <div ref={headerRef} className="reveal" style={{ textAlign: "center", marginBottom: 64 }}>
           <h2
             style={{
               fontSize: "clamp(28px, 4vw, 44px)",
@@ -35,6 +38,7 @@ export default function Features() {
 
         {/* Grid */}
         <div
+          ref={gridRef}
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
@@ -44,7 +48,7 @@ export default function Features() {
           {cards.map((card) => (
             <div
               key={card.title}
-              className="glass"
+              className="glass reveal feature-card"
               style={{
                 borderRadius: 16,
                 padding: 28,
@@ -62,7 +66,7 @@ export default function Features() {
                 (e.currentTarget as HTMLElement).style.borderColor = "";
               }}
             >
-              <div style={{ fontSize: 28, marginBottom: 16 }}>{card.icon}</div>
+              <div className="feature-icon">{card.icon}</div>
               <div
                 style={{
                   display: "flex",
