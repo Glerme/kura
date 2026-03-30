@@ -59,15 +59,10 @@ export default function Navbar() {
             marginRight: "auto",
           }}
         >
-          <span
-            style={{
-              width: 6,
-              height: 6,
-              borderRadius: "50%",
-              background: "rgba(255,255,255,0.5)",
-              boxShadow: "0 0 6px rgba(255,255,255,0.4)",
-              display: "inline-block",
-            }}
+          <img
+            src="/Kura.png"
+            alt="Kura"
+            style={{ width: 24, height: 24, borderRadius: 6, objectFit: "contain" }}
           />
           KURA
         </a>

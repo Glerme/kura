@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { LinksTab } from './LinksTab'
 import { SaveTab } from './SaveTab'
+import kuraLogo from '~/assets/Kura.png'
 import './App.css'
 
 type Tab = 'links' | 'save'
@@ -16,7 +17,7 @@ export default function App() {
       <div className="blob blob-3" />
       <div className="panel">
         <header className="popup-header">
-          <div className="header-dot" />
+          <img src={kuraLogo} alt="Kura" className="header-logo" />
           KURA
         </header>
         <div className="tab-bar">
