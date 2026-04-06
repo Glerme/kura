@@ -27,6 +27,7 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -37,10 +38,25 @@ jobs:
       - name: Build & zip Firefox extension
         run: pnpm --filter kura-extension zip:firefox
 
-      - name: Create Firefox .xpi
+      - name: Sign Firefox extension via AMO
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
+          WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
         run: |
           FIREFOX_ZIP=$(ls apps/extension/.output/kura-extension-*-firefox.zip | head -1)
-          cp "$FIREFOX_ZIP" "${FIREFOX_ZIP%.zip}.xpi"
+          pnpm --filter kura-extension exec web-ext sign \
+            --source-dir apps/extension/.output/firefox-mv2 \
+            --artifacts-dir apps/extension/.output/signed \
+            --api-key "$WEB_EXT_API_KEY" \
+            --api-secret "$WEB_EXT_API_SECRET" \
+            --channel unlisted || true
+          SIGNED_XPI=$(ls apps/extension/.output/signed/*.xpi 2>/dev/null | head -1)
+          if [ -n "$SIGNED_XPI" ]; then
+            cp "$SIGNED_XPI" "${FIREFOX_ZIP%.zip}.xpi"
+          else
+            echo "Signing failed or skipped, falling back to unsigned xpi"
+            cp "$FIREFOX_ZIP" "${FIREFOX_ZIP%.zip}.xpi"
+          fi
 
       - name: Package builds for sideloading
         run: |
