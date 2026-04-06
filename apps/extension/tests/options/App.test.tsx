@@ -113,10 +113,11 @@ describe('Options App — Import/Export', () => {
     const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement
     const file = new File(['[]'], 'test.json', { type: 'application/json' })
     Object.defineProperty(fileInput, 'files', { value: [file], configurable: true })
-    fireEvent.change(fileInput)
+    await act(async () => { fireEvent.change(fileInput) })
 
-    await waitFor(() => screen.getByText(/3 importados/))
+    await screen.findByText(/3 importados/)
+    await act(async () => {}) // flush pending useEffects
     act(() => { vi.advanceTimersByTime(4001) })
-    await waitFor(() => expect(screen.queryByText(/3 importados/)).not.toBeInTheDocument())
+    expect(screen.queryByText(/3 importados/)).not.toBeInTheDocument()
   })
 })
