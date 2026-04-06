@@ -116,7 +116,7 @@ describe('Options App — Import/Export', () => {
     fireEvent.change(fileInput)
 
     await waitFor(() => screen.getByText(/3 importados/))
-    await act(async () => { vi.advanceTimersByTime(4001) })
-    expect(screen.queryByText(/3 importados/)).not.toBeInTheDocument()
+    act(() => { vi.advanceTimersByTime(4001) })
+    await waitFor(() => expect(screen.queryByText(/3 importados/)).not.toBeInTheDocument())
   })
 })
