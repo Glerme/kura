@@ -32,6 +32,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Sync version from tag
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          cd apps/extension
+          npm version "$VERSION" --no-git-tag-version --allow-same-version
+
       - name: Build & zip Chrome extension
         run: pnpm --filter kura-extension zip
 
