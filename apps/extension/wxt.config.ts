@@ -13,11 +13,12 @@ export default defineConfig({
         "script-src 'self'; object-src 'self'; connect-src 'self' https://www.google.com;",
     },
     browser_specific_settings: {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       gecko: {
         id: "guiggff@gmail.com",
         strict_min_version: "109.0",
-        data_collection_permissions: { required: [], optional: [] },
+        data_collection_permissions: {
+          required: ["none"],
+        },
       } as any,
     },
   },
