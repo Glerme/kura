@@ -7,8 +7,38 @@ import { useScrollRevealChildren } from "@/hooks/useScrollReveal";
 // Coloque o arquivo em apps/landing/public/demo.gif para ativar
 const DEMO_GIF = "/demo.gif";
 
+function ScreenshotCard({ src, label }: { src: string; label: string }) {
+  return (
+    <div
+      style={{
+        borderRadius: 14,
+        overflow: "hidden",
+        border: "1px solid rgba(255,255,255,0.10)",
+        background: "rgba(255,255,255,0.03)",
+      }}
+    >
+      <img
+        src={src}
+        alt={label}
+        style={{ width: "100%", display: "block" }}
+        loading="lazy"
+      />
+      <div
+        style={{
+          padding: "10px 14px",
+          fontSize: 12,
+          color: "rgba(255,255,255,0.35)",
+          borderTop: "1px solid rgba(255,255,255,0.06)",
+        }}
+      >
+        {label}
+      </div>
+    </div>
+  );
+}
+
 export default function Demo() {
-  const { t } = useT();
+  const { t, locale } = useT();
   const containerRef = useScrollRevealChildren<HTMLDivElement>(120);
   const [gifLoaded, setGifLoaded] = useState(false);
   const [gifError, setGifError] = useState(false);
@@ -238,6 +268,50 @@ export default function Demo() {
               )}
             </div>
           </div>
+        </div>
+
+        {/* Screenshots grid */}
+        <div className="reveal" style={{ marginTop: 64 }}>
+          {/* Popup row — 3 columns */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: 16,
+              marginBottom: 16,
+            }}
+          >
+            {[
+              { src: "/screenshots/links.png", label: locale === "pt_BR" ? "Lista de links" : "Links list" },
+              { src: "/screenshots/save.png", label: locale === "pt_BR" ? "Salvar página" : "Save page" },
+              { src: "/screenshots/plain-text.png", label: locale === "pt_BR" ? "Notas de texto" : "Text notes" },
+            ].map(({ src, label }) => (
+              <ScreenshotCard key={src} src={src} label={label} />
+            ))}
+          </div>
+
+          {/* Toast row — 2 columns */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              gap: 16,
+              marginBottom: 16,
+            }}
+          >
+            {[
+              { src: "/screenshots/saved-link-note.png", label: locale === "pt_BR" ? "Toast — link salvo" : "Toast — link saved" },
+              { src: "/screenshots/saved-popup-tags.png", label: locale === "pt_BR" ? "Toast — adicionar tags" : "Toast — add tags" },
+            ].map(({ src, label }) => (
+              <ScreenshotCard key={src} src={src} label={label} />
+            ))}
+          </div>
+
+          {/* Options page — full width */}
+          <ScreenshotCard
+            src="/screenshots/page-kura.png"
+            label={locale === "pt_BR" ? "Options Page — todos os links" : "Options Page — all links"}
+          />
         </div>
       </div>
     </section>
