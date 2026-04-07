@@ -20,21 +20,23 @@
 
 ## Screenshots
 
-<!-- Substitua os blocos abaixo pelas imagens reais após capturar os prints -->
+![Fluxo de uso](docs/screenshots/adding.gif)
 
-| Popup — Aba Links | Popup — Aba Salvar |
-|:-----------------:|:------------------:|
-| ![Aba Links](docs/screenshots/popup-links.png) | ![Aba Salvar](docs/screenshots/popup-save.png) |
+| Popup — Lista vazia | Popup — Links salvos |
+|:-------------------:|:--------------------:|
+| ![Lista vazia](docs/screenshots/empty.png) | ![Links salvos](docs/screenshots/links.png) |
 
-| Toast colapsado | Toast expandido |
-|:---------------:|:---------------:|
-| ![Toast collapsed](docs/screenshots/toast-collapsed.png) | ![Toast expanded](docs/screenshots/toast-expanded.png) |
+| Popup — Aba Salvar | Popup — Nota de texto |
+|:------------------:|:---------------------:|
+| ![Aba Salvar](docs/screenshots/save.png) | ![Nota de texto](docs/screenshots/plain-text.png) |
 
-| Options Page | Menu de contexto |
-|:------------:|:----------------:|
-| ![Options](docs/screenshots/options.png) | ![Context menu](docs/screenshots/context-menu.png) |
+| Toast — Link salvo | Toast — Adicionar tags |
+|:-----------------:|:----------------------:|
+| ![Toast colapsado](docs/screenshots/saved-link-note.png) | ![Toast expandido](docs/screenshots/saved-popup-tags.png) |
 
-> **Para adicionar screenshots:** salve as imagens em `docs/screenshots/` com os nomes acima.
+| Options Page |
+|:-----------:|
+| ![Options Page](docs/screenshots/page-kura.png) |
 
 ---
 
