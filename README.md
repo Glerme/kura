@@ -2,11 +2,98 @@
   <img src="apps/extension/assets/Kura.png" alt="Kura" width="96" />
 </p>
 
-# Kura
+<h1 align="center">Kura</h1>
 
-> Salve links, textos e notas diretamente do browser — com tags, comentários e lista de leitura. Rápido, local e sem contas.
+<p align="center">
+  Salve links, textos e notas diretamente do browser — com tags, comentários e lista de leitura.<br/>
+  Rápido, local e sem contas.
+</p>
 
-Kura é uma extensão para Chrome e Firefox que resolve um problema simples: você encontra algo interessante na web e quer guardar para ler depois, com contexto de por que salvou.
+<p align="center">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.2.13-white?style=flat-square" />
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-white?style=flat-square" />
+  <img alt="Chrome" src="https://img.shields.io/badge/Chrome-MV3-white?style=flat-square&logo=googlechrome&logoColor=white" />
+  <img alt="Firefox" src="https://img.shields.io/badge/Firefox-MV2-white?style=flat-square&logo=firefox&logoColor=white" />
+</p>
+
+---
+
+## Screenshots
+
+<!-- Substitua os blocos abaixo pelas imagens reais após capturar os prints -->
+
+| Popup — Aba Links | Popup — Aba Salvar |
+|:-----------------:|:------------------:|
+| ![Aba Links](docs/screenshots/popup-links.png) | ![Aba Salvar](docs/screenshots/popup-save.png) |
+
+| Toast colapsado | Toast expandido |
+|:---------------:|:---------------:|
+| ![Toast collapsed](docs/screenshots/toast-collapsed.png) | ![Toast expanded](docs/screenshots/toast-expanded.png) |
+
+| Options Page | Menu de contexto |
+|:------------:|:----------------:|
+| ![Options](docs/screenshots/options.png) | ![Context menu](docs/screenshots/context-menu.png) |
+
+> **Para adicionar screenshots:** salve as imagens em `docs/screenshots/` com os nomes acima.
+
+---
+
+## Instalação
+
+### Chrome Web Store / Firefox AMO
+
+> Em breve. Por ora, instale manualmente via modo desenvolvedor (veja abaixo).
+
+### Instalação manual
+
+**Pré-requisitos:** Node.js 20+ e pnpm 10+
+
+```bash
+git clone https://github.com/Glerme/kura
+cd kura
+pnpm install
+pnpm --filter kura-extension build
+```
+
+**Chrome:**
+1. Acesse `chrome://extensions`
+2. Ative o "Modo desenvolvedor" (canto superior direito)
+3. Clique em "Carregar sem compactação"
+4. Selecione a pasta `apps/extension/.output/chrome-mv3/`
+
+**Firefox:**
+1. Acesse `about:debugging#/runtime/this-firefox`
+2. Clique em "Carregar extensão temporária"
+3. Selecione `apps/extension/.output/firefox-mv2/manifest.json`
+
+---
+
+## Como usar
+
+### Salvar a página atual
+
+Clique no ícone do Kura na barra do browser para abrir o popup. Na aba **Salvar**:
+
+1. A URL e o título da página atual são preenchidos automaticamente
+2. Adicione tags separadas por vírgula (ex: `dev, artigos, leitura`)
+3. Escreva um comentário opcional para lembrar por que salvou
+4. Clique em **Salvar**
+
+### Salvar via menu de contexto
+
+Clique com o botão direito em qualquer página ou link e selecione **"Salvar no Kura"**. O link é salvo silenciosamente e um **toast** aparece no canto superior direito:
+
+- Clique em **"Adicionar →"** para pausar o timer e enriquecer o link com tags e comentário
+- Clique em **"Não, obrigado"** ou aguarde 6 segundos para fechar sem modificar
+
+### Navegar pelos links salvos
+
+Abra o popup na aba **Links** ou acesse a **Options Page** (clique com o botão direito no ícone > Opções) para a visualização completa com:
+
+- Busca em tempo real por título, tags e comentário
+- Filtros: todos, não lidos, ou por tag específica
+- Clique em um link para abrir em nova aba
+- Clique no chevron (›) para expandir e ver comentário, marcar como lido ou deletar
 
 ---
 
@@ -34,13 +121,6 @@ Kura é uma extensão para Chrome e Firefox que resolve um problema simples: voc
 - **Compartilhar** — via Web Share API ou cópia para clipboard
 - **Notas de texto** — salvas com ícone ✎ e abertas inline (sem abrir URL)
 
-### Toast não-bloqueante
-
-Ao salvar via menu de contexto, um toast aparece no canto superior direito da página:
-
-- **Estado 1 — Collapsed:** confirmação com barra de progresso de 6s e botões "Não, obrigado" / "Adicionar →"
-- **Estado 2 — Expandido:** timer pausa, aparecem inputs de Tags e Comentário para enriquecer o link antes de confirmar
-
 ---
 
 ## Stack
@@ -61,11 +141,6 @@ Ao salvar via menu de contexto, um toast aparece no canto superior direito da p�
 
 ## Desenvolvimento
 
-### Pré-requisitos
-
-- Node.js 20+
-- pnpm 10+
-
 ### Setup
 
 ```bash
@@ -77,10 +152,10 @@ pnpm install
 ### Comandos
 
 ```bash
-# Desenvolvimento (Chrome)
+# Desenvolvimento com hot-reload (Chrome)
 pnpm --filter kura-extension dev
 
-# Desenvolvimento (Firefox)
+# Desenvolvimento com hot-reload (Firefox)
 pnpm --filter kura-extension dev:firefox
 
 # Build (Chrome)
@@ -88,6 +163,10 @@ pnpm --filter kura-extension build
 
 # Build (Firefox)
 pnpm --filter kura-extension build:firefox
+
+# Gerar .zip para publicação
+pnpm --filter kura-extension zip
+pnpm --filter kura-extension zip:firefox
 
 # Testes
 pnpm --filter kura-extension test
@@ -99,20 +178,7 @@ pnpm --filter kura-extension lint
 pnpm --filter kura-extension compile
 ```
 
-### Carregar no browser
-
-**Chrome:**
-1. Acesse `chrome://extensions`
-2. Ative o "Modo desenvolvedor"
-3. "Carregar sem compactação" → selecione `.output/chrome-mv3/`
-
-**Firefox:**
-1. Acesse `about:debugging#/runtime/this-firefox`
-2. "Carregar extensão temporária" → selecione `.output/firefox-mv2/manifest.json`
-
----
-
-## Estrutura
+### Estrutura
 
 ```
 apps/extension/
@@ -129,6 +195,14 @@ apps/extension/
 └── tests/
     ├── lib/            # db, tags, fetch-title
     └── popup/          # LinkItem, LinksTab, SaveTab
+```
+
+### Testes
+
+49 testes cobrindo a lib layer (db, tags, fetch-title) e o popup (LinkItem, LinksTab, SaveTab), incluindo notas `kura://`, botões de share, dots de leitura e filtros.
+
+```bash
+pnpm --filter kura-extension test run
 ```
 
 ---
@@ -151,18 +225,6 @@ O projeto segue um modelo **free + Pro**:
 
 **Kura Teams** _(fase 3)_
 - Workspaces compartilhados, coleções de equipe, permissões por membro
-
-> Pocket encerrou em julho/2025 — há uma janela real para capturar usuários que ficaram sem uma alternativa simples e local-first.
-
----
-
-## Testes
-
-```bash
-pnpm --filter kura-extension test run
-```
-
-49 testes cobrindo: lib layer (db, tags, fetch-title), popup (LinkItem, LinksTab, SaveTab) incluindo notas `kura://`, botões de share, dots de leitura e filtros.
 
 ---
 
